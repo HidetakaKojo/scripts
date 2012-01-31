@@ -49,9 +49,10 @@ sub query_normalize {
   my $query = shift;
   $query = lc $query;
   $query =~ s/[\s\r\n]+/ /gs;
-  $query =~ s/([\'\"]).+?([\'\"])/$1?$2/g;
+  $query =~ s/(['"]).*(?!<=\\)\1*?\1/$1?$1/;
   $query =~ s/in\s?\([^\)]*\)/in (?,...,?)/g;
-  $query =~ s/([^a-z])\d+$/$1?/g;
-  $query =~ s/([^a-z])\d+([^a-z])/$1?$2/g;
+  $query =~ s/([^a-z_])\d+$/$1?/g;
+  $query =~ s/([^a-z_])\d+([^a-z_])/$1?$2/g;
   return $query;
 }
+
